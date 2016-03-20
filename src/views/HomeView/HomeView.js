@@ -2,6 +2,7 @@
 import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { increment, doubleAsync } from '../../redux/modules/counter'
+import { refreshRepos } from '../../redux/modules/availableRepos'
 import RepoSelector from '../../components/Graph/RepoSelector'
 import DuckImage from './Duck.jpg'
 import classes from './HomeView.scss'
@@ -17,12 +18,19 @@ import classes from './HomeView.scss'
 // We avoid using the `@connect` decorator on the class definition so
 // that we can export the undecorated component for testing.
 // See: http://rackt.github.io/redux/docs/recipes/WritingTests.html
-export class HomeView extends React.Component<void, Props, void> {
+export class HomeView extends React.Component {
   static propTypes = {
     counter: PropTypes.number.isRequired,
+    refreshRepos: PropTypes.func.isRequired,
     doubleAsync: PropTypes.func.isRequired,
     increment: PropTypes.func.isRequired
   };
+
+  constructor (props) {
+    super(props)
+    console.log('HELLO')
+    this.props.refreshRepos()
+  }
 
   render () {
     return (
@@ -58,5 +66,6 @@ const mapStateToProps = (state) => ({
 })
 export default connect((mapStateToProps), {
   increment: () => increment(1),
-  doubleAsync
+  doubleAsync,
+  refreshRepos
 })(HomeView)

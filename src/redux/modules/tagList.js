@@ -18,7 +18,7 @@ export function addTag (tagToAdd = '') {
   }
 }
 
-export function removeTag (tagToRemove = '') {
+export function removeTag (tagToRemove) {
   return {
     type: TAGLIST_REMOVE,
     payload: tagToRemove
@@ -34,10 +34,10 @@ export const actions = {
 // Action Handlers
 // ------------------------------------
 const ACTION_HANDLERS = {
-  [TAGLIST_ADD]: (state, action) => {
-    if (action.payload) {
+  [TAGLIST_ADD]: (state, action, appState) => {
+    if (action.payload && appState.availableRepos.items.indexOf(action.payload) !== -1) {
       return state.push({
-        id: state.size + 1,
+        id: state.size,
         text: action.payload
       })
     } else {
@@ -50,13 +50,13 @@ const ACTION_HANDLERS = {
 // ------------------------------------
 // Initial State
 // ------------------------------------
-const initialState = Immutable.List([{id: 1, text: 'myTag1'}, {id: 2, text: 'myTag2'}])
+const initialState = Immutable.List()
 
 // ------------------------------------
 // Reducer
 // ------------------------------------
-export default function tagListReducer (state = initialState, action) {
+export default function tagListReducer (state = initialState, action, appState) {
   const handler = ACTION_HANDLERS[action.type]
 
-  return handler ? handler(state, action) : state
+  return handler ? handler(state, action, appState) : state
 }

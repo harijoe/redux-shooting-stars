@@ -6,7 +6,7 @@ import {WithContext as ReactTags} from 'react-tag-input'
 class RepoSelector extends React.Component {
   static propTypes = {
     tagList: PropTypes.object.isRequired,
-    availableRepos: PropTypes.object.isRequired,
+    availableRepos: PropTypes.array.isRequired,
     addTag: PropTypes.func.isRequired,
     removeTag: PropTypes.func.isRequired
   };
@@ -15,7 +15,7 @@ class RepoSelector extends React.Component {
     return (
       <div>
         <ReactTags tags={Array.from(this.props.tagList)}
-          suggestions={Array.from(this.props.availableRepos.size)}
+          suggestions={this.props.availableRepos}
           handleDelete={this.props.removeTag}
           handleAddition={this.props.addTag}
           handleDrag={function () {}}
@@ -26,7 +26,7 @@ class RepoSelector extends React.Component {
 }
 const mapStateToProps = (state) => ({
   tagList: state.tagList,
-  availableRepos: new Set(['repo1', 'repo2', 'repo3'])
+  availableRepos: state.availableRepos.items
 })
 
 export default connect((mapStateToProps), {

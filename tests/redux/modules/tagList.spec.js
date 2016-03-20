@@ -24,18 +24,10 @@ describe('(Redux Module) TagList', function () {
     })
 
     it('Should return the previous state if an action was not matched.', function () {
-      let state = tagListReducer(undefined, {})
+      let state = tagListReducer(Immutable.List(), {})
       expect(state.size).to.equal(0)
       state = tagListReducer(state, {type: '@@@@@@@'})
       expect(state.size).to.equal(0)
-      state = tagListReducer(state, addTag('myTag'))
-      expect(state.size).to.equal(1)
-      state = tagListReducer(state, {type: '@@@@@@@'})
-      expect(state.size).to.equal(1)
-      expect(state.has('myTag')).to.be.true
-      state = tagListReducer(state, removeTag('myTag'))
-      expect(state.has('myTag')).to.be.false
-
     })
   })
 
@@ -69,25 +61,22 @@ describe('(Redux Module) TagList', function () {
     it('Should assign the first argument to the "payload" property.', function () {
       expect(removeTag('myTag')).to.have.property('payload', 'myTag')
     })
-
-    it('Should default to empty string if "payload" property was not provided.', function () {
-      expect(removeTag()).to.have.property('payload', '')
-    })
   })
 
   describe('(Action Handler) TAGLIST_ADD', function () {
     it('Should add the tag in the state with the action payload\'s "value" property.', function () {
-      let state = tagListReducer(undefined, {})
+      let initialTagListState = Immutable.List();
+      let appState = {tagList: initialTagListState, availableRepos: {items: ['repo1', 'repo2']}}
+      let state = tagListReducer(initialTagListState, addTag('repo1'), appState)
+      expect(state.size).to.equal(1)
+      expect(state.last().text).to.equal('repo1')
+    })
+    it('Should not add the tag in the state if it is not included in availableRepos', function () {
+      let initialTagListState = Immutable.List();
+      let appState = {tagList: initialTagListState, availableRepos: {items: ['repo1', 'repo2']}};
+      expect(appState.tagList.size).to.equal(0)
+      let state = tagListReducer(initialTagListState, addTag('notInRepos'), appState)
       expect(state.size).to.equal(0)
-      state = tagListReducer(state, addTag('myTag'))
-      expect(state.has('myTag')).to.equal(true)
-      expect(state.size).to.equal(1)
-      state = tagListReducer(state, addTag(''))
-      expect(state.has('myTag')).to.equal(true)
-      expect(state.size).to.equal(1)
-      state = tagListReducer(state, addTag('myTag'))
-      expect(state.has('myTag')).to.equal(true)
-      expect(state.size).to.equal(1)
     })
   })
 

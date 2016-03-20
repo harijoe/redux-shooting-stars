@@ -2,6 +2,7 @@
 import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { increment, doubleAsync } from '../../redux/modules/counter'
+import RepoSelector from '../../components/Graph/RepoSelector'
 import DuckImage from './Duck.jpg'
 import classes from './HomeView.scss'
 
@@ -12,11 +13,6 @@ import classes from './HomeView.scss'
 // NOTE: You can run `npm run flow:check` to check for any errors in your
 // code, or `npm i -g flow-bin` to have access to the binary globally.
 // Sorry Windows users :(.
-type Props = {
-  counter: number,
-  doubleAsync: Function,
-  increment: Function
-};
 
 // We avoid using the `@connect` decorator on the class definition so
 // that we can export the undecorated component for testing.
@@ -36,6 +32,7 @@ export class HomeView extends React.Component<void, Props, void> {
             <img className={classes.duck}
               src={DuckImage}
               alt='This is a duck, because Redux.' />
+            <RepoSelector />
           </div>
         </div>
         <h1>Welcome to the React Redux Starter Kit</h1>

@@ -34,14 +34,23 @@ export const actions = {
 // Action Handlers
 // ------------------------------------
 const ACTION_HANDLERS = {
-  [TAGLIST_ADD]: (state, action) => action.payload ? state.add(action.payload) : state,
-  [TAGLIST_REMOVE]: (state, action) => action.payload ? state.delete(action.payload) : state
+  [TAGLIST_ADD]: (state, action) => {
+    if (action.payload) {
+      return state.push({
+        id: state.size + 1,
+        text: action.payload
+      })
+    } else {
+      return state
+    }
+  },
+  [TAGLIST_REMOVE]: (state, action) => state.delete(action.payload)
 }
 
 // ------------------------------------
 // Initial State
 // ------------------------------------
-const initialState = Immutable.Set()
+const initialState = Immutable.List([{id: 1, text: 'myTag1'}, {id: 2, text: 'myTag2'}])
 
 // ------------------------------------
 // Reducer

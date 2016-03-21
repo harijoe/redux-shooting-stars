@@ -1,6 +1,8 @@
 import React from 'react'
 import _ from 'lodash'
 
+import { connect } from 'react-redux'
+
 import RepoSelector from './RepoSelector'
 
 import { Line as LineChart } from 'react-chartjs'
@@ -25,7 +27,6 @@ class Graph extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      selectedRepos: [],
       selectedReposNormalized: [],
       data: {
         labels: _.rangeRight(-30),
@@ -35,7 +36,7 @@ class Graph extends React.Component {
     }
   }
 
-  componentWillMount () {
+  componentWillReceiveProps () {
     this.refreshData()
   }
 
@@ -43,7 +44,7 @@ class Graph extends React.Component {
     var newData = this.state.data
     newData.datasets = []
     var that = this
-    if (this.state.selectedReposNormalized.length === 0) {
+    if (this.state.selectedReposNormalized.size === 0) {
       this.setState({loaded: false})
 
       return
@@ -73,7 +74,7 @@ class Graph extends React.Component {
         datapoints = datapoints.map((e) => {
           return parseInt(e['stars'])
         })
-        datapoints = _.rangeRight(0, 30 - datapoints.length, 0).concat(datapoints)
+        datapoints = _.rangeRight(0, 30 - datapoints.size, 0).concat(datapoints)
         var dataset = {
           label: repo,
           fillColor: 'rgba(' + color.rgb + ',0.2)',
@@ -88,25 +89,20 @@ class Graph extends React.Component {
       })
   }
 
-  updateRepos (repos) {
-    var selectedReposNormalized = repos.map((e) => {
-      return e['text']
-    })
-    this.setState({selectedRepos: repos, selectedReposNormalized}, () => {
-      this.refreshData()
-    })
-  }
-
   render () {
     return <div>
       <h3>Graph</h3>
       <RepoSelector repos={this.props.repos} updateRepos={this.updateRepos.bind(this)}
         selectedRepos={this.state.selectedRepos}/>
-      {this.state.loaded && this.state.data.datasets.length >= 1 &&
+      {this.state.loaded && this.state.data.datasets.size >= 1 &&
       <LineChart data={this.state.data} options={chartOptions} width='800' height='400' redraw
       />}
     </div>
   }
 }
 
-export default Graph
+const mapStateToProps = (state) => ({
+  tagList: state.tagList
+})
+
+export default connect((mapStateToProps), {})(Graph)

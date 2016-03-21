@@ -35,9 +35,15 @@ export const actions = {
 // ------------------------------------
 const ACTION_HANDLERS = {
   [TAGLIST_ADD]: (state, action, appState) => {
-    if (action.payload && appState.availableRepos.items.indexOf(action.payload) !== -1) {
+    if (action.payload &&
+      appState.availableRepos.items.indexOf(action.payload) !== -1 &&   // Selected repo must be in available Repos
+      state.size < 6 &&                                                 // No more than 5 tags
+      !state.some((e) => action.payload === e.text)                     // Not already present
+    ) {
+      let maxId = state.reduce((max, e) => e.id > max ? e.id : max, 0)  // Compute next available id
+
       return state.push({
-        id: state.size,
+        id: maxId + 1,
         text: action.payload
       })
     } else {

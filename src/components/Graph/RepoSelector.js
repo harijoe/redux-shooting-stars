@@ -1,4 +1,6 @@
 import React, { PropTypes } from 'react'
+import _ from 'lodash'
+
 import { connect } from 'react-redux'
 import { addTag, removeTag } from '../../redux/modules/tagList'
 import {WithContext as ReactTags} from 'react-tag-input'
@@ -12,10 +14,12 @@ class RepoSelector extends React.Component {
   };
 
   render () {
+    let suggestions = _.difference(this.props.availableRepos, (this.props.tagList.toArray().map((e) => e.text)))
+
     return (
       <div>
         <ReactTags tags={Array.from(this.props.tagList)}
-          suggestions={this.props.availableRepos}
+          suggestions={suggestions}
           handleDelete={this.props.removeTag}
           handleAddition={this.props.addTag}
           handleDrag={function () {}}

@@ -28,7 +28,6 @@ export class HomeView extends React.Component {
 
   constructor (props) {
     super(props)
-    console.log('HELLO')
     this.props.refreshRepos()
   }
 

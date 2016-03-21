@@ -78,6 +78,15 @@ describe('(Redux Module) TagList', function () {
       let state = tagListReducer(initialTagListState, addTag('notInRepos'), appState)
       expect(state.size).to.equal(0)
     })
+    it('Should not add two times the same tag', function () {
+      let initialTagListState = Immutable.List();
+      let appState = {tagList: initialTagListState, availableRepos: {items: ['repo1', 'repo2']}};
+      expect(appState.tagList.size).to.equal(0)
+      let state = tagListReducer(initialTagListState, addTag('repo1'), appState)
+      state = tagListReducer(initialTagListState, addTag('repo1'), appState)
+      expect(state.size).to.equal(1)
+      expect(state.last().text).to.equal('repo1')
+    })
   })
 
   describe('(Action Handler) TAGLIST_REMOVE', function () {

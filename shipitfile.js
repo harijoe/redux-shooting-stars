@@ -4,32 +4,35 @@ module.exports = function (shipit) {
 
   shipit.initConfig({
     default: {
-      workspace: '/tmp/shooting-stars',
-      repositoryUrl: 'git@github.com:harijoe/redux-shootingstars.git',
-      ignores: ['.git', 'node_modules'],
+      workspace: '/tmp/shooting-stars-redux',
+      repositoryUrl: 'git@github.com:harijoe/redux-shooting-stars.git',
+      ignores: ['.git', 'node_modules', 'dist'],
       keepReleases: 3,
       shared: {
         overwrite: true,
         dirs: [
-          'bower_components',
           'node_modules',
-          'app/utils/parameters.js'
+          'src/config/parameters.js'
         ]
       }
     },
     prod: {
       servers: 'ubuntu@home',
       branch: 'master',
-      deployTo: '/var/www/shooting-stars'
+      deployTo: '/var/www/shooting-stars-redux'
     }
   });
 
   var npmInstall = function () {
-    return shipit.remote("cd " + shipit.releasePath + " && npm install");
+    return shipit.remote('cd ' + shipit.releasePath + ' && npm install');
   };
 
   var webpackBuild = function () {
-    return shipit.remote("cd " + shipit.releasePath + " && webpack");
+    return shipit.remote('cd ' + shipit.releasePath + ' && webpack');
+  };
+
+  var compile = function () {
+    return shipit.remote('cd ' + shipit.releasePath + ' && NODE_ENV=production npm run compile');
   };
 
   shipit.on('updated', function () {
@@ -39,8 +42,9 @@ module.exports = function (shipit) {
   shipit.blTask('install', function () {
     return npmInstall()
       .then(webpackBuild)
+      .then(compile)
       .then(function () {
-      shipit.log('Install Done!');
-    });
+        shipit.log('Install Done!');
+      });
   });
 };

@@ -27,10 +27,6 @@ module.exports = function (shipit) {
     return shipit.remote('cd ' + shipit.releasePath + ' && npm install');
   };
 
-  var webpackBuild = function () {
-    return shipit.remote('cd ' + shipit.releasePath + ' && webpack');
-  };
-
   var compile = function () {
     return shipit.remote('cd ' + shipit.releasePath + ' && NODE_ENV=production npm run compile');
   };
@@ -41,7 +37,6 @@ module.exports = function (shipit) {
 
   shipit.blTask('install', function () {
     return npmInstall()
-      .then(webpackBuild)
       .then(compile)
       .then(function () {
         shipit.log('Install Done!');

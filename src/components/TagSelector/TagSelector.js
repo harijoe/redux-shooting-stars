@@ -1,11 +1,11 @@
-import React, { PropTypes } from 'react'
-import _ from 'lodash'
+import React, { PropTypes } from 'react';
+import _ from 'lodash';
+import { connect } from 'react-redux';
 
-import { connect } from 'react-redux'
-import { addTag, removeTag } from '../../redux/modules/tagList'
-import {WithContext as ReactTags} from 'react-tag-input'
+import { addTag, removeTag } from '../../redux/modules/tagList';
+import {WithContext as ReactTags} from 'react-tag-input';
 
-class RepoSelector extends React.Component {
+class TagSelector extends React.Component {
   static propTypes = {
     tagList: PropTypes.object.isRequired,
     availableRepos: PropTypes.array.isRequired,
@@ -14,7 +14,7 @@ class RepoSelector extends React.Component {
   };
 
   render () {
-    let suggestions = _.difference(this.props.availableRepos, (this.props.tagList.toArray().map((e) => e.text)))
+    let suggestions = _.difference(this.props.availableRepos, (this.props.tagList.toArray().map((e) => e.text)));
 
     return (
       <div>
@@ -25,15 +25,15 @@ class RepoSelector extends React.Component {
           handleDrag={function () {}}
         />
       </div>
-    )
+    );
   }
 }
 const mapStateToProps = (state) => ({
   tagList: state.tagList,
   availableRepos: state.availableRepos.items
-})
+});
 
 export default connect((mapStateToProps), {
   addTag: (tag) => addTag(tag),
   removeTag: (tag) => removeTag(tag)
-})(RepoSelector)
+})(TagSelector);

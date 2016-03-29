@@ -1,11 +1,12 @@
 /* @flow */
-import React, { PropTypes } from 'react'
-import { connect } from 'react-redux'
-import { increment, doubleAsync } from '../../redux/modules/counter'
-import { refreshRepos } from '../../redux/modules/availableRepos'
-import RepoSelector from '../../components/Graph/RepoSelector'
-import DuckImage from './Duck.jpg'
-import classes from './HomeView.scss'
+import React, { PropTypes } from 'react';
+import { connect } from 'react-redux';
+import { increment, doubleAsync } from '../../redux/modules/counter';
+import { refreshRepos } from '../../redux/modules/availableRepos';
+import TagSelector from '../../components/TagSelector/TagSelector';
+import RepoManager from '../../containers/RepoManager/RepoManager';
+import Graph from '../../components/Graph/Graph';
+import classes from './HomeView.scss';
 
 // We can use Flow (http://flowtype.org/) to type our component's props
 // and state. For convenience we've included both regular propTypes and
@@ -27,44 +28,39 @@ export class HomeView extends React.Component {
   };
 
   constructor (props) {
-    super(props)
-    this.props.refreshRepos()
+    super(props);
+    this.props.refreshRepos();
   }
 
   render () {
     return (
-      <div className='container text-center'>
-        <div className='row'>
-          <div className='col-xs-2 col-xs-offset-5'>
-            <img className={classes.duck}
-              src={DuckImage}
-              alt='This is a duck, because Redux.' />
-            <RepoSelector />
+      <div className='main-container'>
+        <nav className='navbar navbar-default text-center' role='navigation'>
+          <h2>Github Trends</h2>
+        </nav>
+        <div className='container'>
+          <div className='col-sm-4'>
+            <RepoManager />
+          </div>
+          <div className='col-sm-8'>
+            <h3>Graph</h3>
+            <div className={classes.tags}>
+              <TagSelector />
+            </div>
+
+            <Graph />
           </div>
         </div>
-        <h1>Welcome to the React Redux Starter Kit</h1>
-        <h2>
-          Sample Counter:
-          {' '}
-          <span className={classes['counter--green']}>{this.props.counter}</span>
-        </h2>
-        <button className='btn btn-default' onClick={this.props.increment}>
-          Increment
-        </button>
-        {' '}
-        <button className='btn btn-default' onClick={this.props.doubleAsync}>
-          Double (Async)
-        </button>
       </div>
-    )
+    );
   }
 }
 
 const mapStateToProps = (state) => ({
   counter: state.counter
-})
+});
 export default connect((mapStateToProps), {
   increment: () => increment(1),
   doubleAsync,
   refreshRepos
-})(HomeView)
+})(HomeView);

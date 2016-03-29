@@ -1,16 +1,16 @@
-import axios from 'axios'
+import axios from 'axios';
 
 let apiClient = axios.create({
   baseURL: 'http://api.vallini.io/',
   timeout: 1000
-})
+});
 
 // ------------------------------------
 // Constants
 // ------------------------------------
-export const FETCH_REPOS_REQUEST = 'FETCH_REPOS_REQUEST'
-export const FETCH_REPOS_FAILURE = 'FETCH_REPOS_FAILURE'
-export const FETCH_REPOS_SUCCESS = 'FETCH_REPOS_SUCCESS'
+export const FETCH_REPOS_REQUEST = 'FETCH_REPOS_REQUEST';
+export const FETCH_REPOS_FAILURE = 'FETCH_REPOS_FAILURE';
+export const FETCH_REPOS_SUCCESS = 'FETCH_REPOS_SUCCESS';
 
 // ------------------------------------
 // Actions
@@ -23,35 +23,37 @@ export const FETCH_REPOS_SUCCESS = 'FETCH_REPOS_SUCCESS'
 export function fetchRepos () {
   return {
     type: FETCH_REPOS_REQUEST
-  }
+  };
 }
 
 export function receiveReposSuccess (repos) {
   return {
     type: FETCH_REPOS_SUCCESS,
     repos: repos
-  }
+  };
 }
 
 export function receiveReposFailure (errorMsg) {
   return {
     type: FETCH_REPOS_FAILURE,
     errorMsg: errorMsg
-  }
+  };
 }
 
 export const refreshRepos = () => {
   return (dispatch) => {
-    dispatch(fetchRepos)
+    dispatch(fetchRepos);
     return apiClient.get('watched_repositories')
       .then(({data}) => {
         dispatch(receiveReposSuccess(data['hydra:member'].map((e) => {
-          return e['name']
-        })))
+          return e['name'];
+        })));
       })
-    .catch((response) => dispatch(receiveReposFailure(response.data['hydra:title'])))
-  }
-}
+    .catch((response) => {
+      dispatch(receiveReposFailure(response.data['hydra:title']));
+    });
+  };
+};
 
 // This is a thunk, meaning it is a function that immediately
 // returns a function for lazy evaluation. It is incredibly useful for
@@ -62,7 +64,7 @@ export const refreshRepos = () => {
 
 export const actions = {
   refreshRepos
-}
+};
 
 // ------------------------------------
 // Action Handlers
@@ -73,23 +75,23 @@ const ACTION_HANDLERS = {
       isFetching: true,
       items: [],
       errorMsg: ''
-    }
+    };
   },
   [FETCH_REPOS_SUCCESS]: (state, action) => {
     return {
       isFetching: false,
       items: action.repos,
       errorMsg: ''
-    }
+    };
   },
   [FETCH_REPOS_FAILURE]: (state, action) => {
     return {
       isFetching: false,
       items: [],
       errorMsg: action.errorMsg
-    }
+    };
   }
-}
+};
 
 // ------------------------------------
 // Reducer
@@ -98,9 +100,9 @@ const initialState = {
   isFetching: false,
   items: [],
   errorMsg: ''
-}
+};
 export default function counterReducer (state: number = initialState, action: Action): number {
-  const handler = ACTION_HANDLERS[action.type]
+  const handler = ACTION_HANDLERS[action.type];
 
-  return handler ? handler(state, action) : state
+  return handler ? handler(state, action) : state;
 }

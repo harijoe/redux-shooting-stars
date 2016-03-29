@@ -3,6 +3,8 @@
 
 node_modules
 
+src/config/parameters.js
+
 dist
 coverage
 

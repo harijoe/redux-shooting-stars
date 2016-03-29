@@ -12,7 +12,7 @@ module.exports = function (shipit) {
         overwrite: true,
         dirs: [
           'node_modules',
-          'src/config/parameters.js'
+          'src/config'
         ]
       }
     },
@@ -24,14 +24,14 @@ module.exports = function (shipit) {
   });
 
   var npmInstall = function () {
-    return shipit.remote('cd ' + shipit.releasePath + ' && npm install');
+    return shipit.remote('cd ' + shipit.releasePath + ' && NODE_ENV=development npm install');
   };
 
   var compile = function () {
     return shipit.remote('cd ' + shipit.releasePath + ' && NODE_ENV=production npm run compile');
   };
 
-  shipit.on('updated', function () {
+  shipit.on('fetched', function () {
     return shipit.start('install');
   });
 

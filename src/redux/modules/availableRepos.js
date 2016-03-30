@@ -1,9 +1,4 @@
-import axios from 'axios';
-
-let apiClient = axios.create({
-  baseURL: 'http://api.vallini.io/',
-  timeout: 1000
-});
+import {apiClient} from '../utils/client';
 
 // ------------------------------------
 // Constants

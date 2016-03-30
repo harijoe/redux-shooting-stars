@@ -1,15 +1,4 @@
-import axios from 'axios';
-
-let apiClient = axios.create({
-  baseURL: 'http://api.vallini.io/',
-  timeout: 1000
-});
-
-let githubClient = axios.create({
-  baseURL: 'https://api.github.com/',
-  timeout: 1000,
-  headers: {'Authorization': 'token ' + 'ca75bbd82f37fbd57e0de838256e48b84057afe5'}
-});
+import {apiClient, githubClient} from '../utils/client';
 
 // ------------------------------------
 // Constants

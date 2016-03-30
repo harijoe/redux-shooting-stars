@@ -2,9 +2,11 @@ module.exports = function (shipit) {
   require('shipit-deploy')(shipit);
   require('shipit-shared')(shipit);
 
+  var workspacePath = '/tmp/shooting-stars-redux';
+
   shipit.initConfig({
     default: {
-      workspace: '/tmp/shooting-stars-redux',
+      workspace: workspacePath,
       repositoryUrl: 'git@github.com:harijoe/redux-shooting-stars.git',
       ignores: ['.git', 'node_modules', 'dist'],
       keepReleases: 3,
@@ -24,11 +26,11 @@ module.exports = function (shipit) {
   });
 
   var npmInstall = function () {
-    return shipit.remote('cd ' + shipit.releasePath + ' && NODE_ENV=development npm install');
+    return shipit.local(`cd ${workspacePath} && npm install --production`);
   };
 
   var compile = function () {
-    return shipit.remote('cd ' + shipit.releasePath + ' && NODE_ENV=production npm run compile');
+    return shipit.local(`cd ${workspacePath} && NODE_ENV=production npm run compile`);
   };
 
   shipit.on('fetched', function () {

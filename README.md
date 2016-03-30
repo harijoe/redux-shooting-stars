@@ -2,6 +2,7 @@ Redux Shooting Stars
 ====================
 
 # To setup dev environment
+Notice: Make sure parameters.js is present in src/config
 `npm install`
 
 # To develop
@@ -12,4 +13,6 @@ Redux Shooting Stars
 `npm run compile`
 
 # To deploy
+Notice: Make sure parameters.prod.js is present in src/config
+
 `shipit prod deploy`

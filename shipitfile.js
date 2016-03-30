@@ -3,7 +3,6 @@ module.exports = function (shipit) {
   require('shipit-shared')(shipit);
 
   var workspacePath = '/tmp/shooting-stars-redux';
-  var parametersFile = '.parameters';
 
   shipit.initConfig({
     default: {
@@ -30,7 +29,7 @@ module.exports = function (shipit) {
   };
 
   var copyParameters = function () {
-    return shipit.local(`cp src/config/parameters.js ${workspacePath}/src/config/parameters.js`);
+    return shipit.local(`cp src/config/parameters.${shipit.environment}.js ${workspacePath}/src/config/parameters.js`);
   };
 
   var compile = function () {

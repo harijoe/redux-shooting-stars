@@ -4,6 +4,7 @@
 node_modules
 
 src/config/parameters.js
+src/config/parameters.prod.js
 
 dist
 coverage

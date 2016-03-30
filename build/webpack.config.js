@@ -130,7 +130,7 @@ webpackConfig.module.loaders = [{
       production: {
         plugins: [
           //'transform-react-remove-prop-types',
-          'transform-react-constant-elements'
+          //'transform-react-constant-elements'
         ]
       }
     }

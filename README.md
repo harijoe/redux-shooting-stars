@@ -1,9 +1,15 @@
 Redux Shooting Stars
 ====================
 
-# Development
+# To setup dev environment
+`npm install`
+
+# To develop
 `npm run dev:nw`
 `npm run test:dev`
 
-# Production
+# To test production build
 `npm run compile`
+
+# To deploy
+`shipit prod deploy`

@@ -76,12 +76,16 @@ class Graph extends React.Component
   }
 
   fetchRepoData (repo, newData, color) {
-    return apiClient.get('github_stars_measures?repository=' + repo)
+    return apiClient.get('github_stars_measures?repository=' + repo + '&order[measureDatetime]')
       .then(({data}) => {
         let datapoints = data['hydra:member'];
         datapoints = datapoints.map((e) => {
           return parseInt(e['stars']);
         });
+        datapoints = _.flip(function() {
+          return _.toArray(arguments);
+        })(...datapoints);
+
         datapoints = _.rangeRight(0, 30 - datapoints.length, 0).concat(datapoints);
         var dataset = {
           label: repo,

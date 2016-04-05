@@ -11,8 +11,9 @@ const chartOptions = {
   scaleShowGridLines: false,
   pointDot: false,
   bezierCurve: false,
-  multiTooltipTemplate: '<%= datasetLabel %>: <%= value %>',
-  tooltipTemplate: '<%= datasetLabel %>: <%= value %>'
+  showTooltips: false,
+  //multiTooltipTemplate: '<%= datasetLabel %>: <%= value %>',
+  //tooltipTemplate: '<%= datasetLabel %>: <%= value %>',
 };
 
 let apiClient = axios.create({

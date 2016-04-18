@@ -21,5 +21,5 @@ Notice: Make sure parameters.prod.js is present in src/config
 # HowTo
 
 ## Add a new environment
-* Add src/config/paramters.newEnv.js
+* Add src/config/parameters.newEnv.js
 * Add newEnv in shipit file

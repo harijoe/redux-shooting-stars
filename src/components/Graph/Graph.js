@@ -11,9 +11,7 @@ const chartOptions = {
   scaleShowGridLines: false,
   pointDot: false,
   bezierCurve: false,
-  showTooltips: false,
-  //multiTooltipTemplate: '<%= datasetLabel %>: <%= value %>',
-  //tooltipTemplate: '<%= datasetLabel %>: <%= value %>',
+  showTooltips: false
 };
 
 let apiClient = axios.create({
@@ -83,7 +81,7 @@ class Graph extends React.Component
         datapoints = datapoints.map((e) => {
           return parseInt(e['stars']);
         });
-        datapoints = _.flip(function() {
+        datapoints = _.flip(function () {
           return _.toArray(arguments);
         })(...datapoints);
 

@@ -5,6 +5,8 @@ import { connect } from 'react-redux';
 import { addTag, removeTag } from '../../redux/modules/tagList';
 import {WithContext as ReactTags} from 'react-tag-input';
 
+import classes from './TagSelector.scss';
+
 class TagSelector extends React.Component {
   static propTypes = {
     tagList: PropTypes.object.isRequired,
@@ -17,7 +19,7 @@ class TagSelector extends React.Component {
     let suggestions = _.difference(this.props.availableRepos, (this.props.tagList.toArray().map((e) => e.text)));
 
     return (
-      <div>
+      <div className={classes.container}>
         <ReactTags tags={Array.from(this.props.tagList)}
           suggestions={suggestions}
           handleDelete={this.props.removeTag}

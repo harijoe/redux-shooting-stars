@@ -5,7 +5,9 @@ import { connect } from 'react-redux';
 
 import axios from 'axios';
 
-import { Line as LineChart } from 'react-chartjs';
+import { Line as LineChart, Pie as PieChart } from 'react-chartjs';
+
+import classes from './Graph.scss';
 
 const chartOptions = {
   scaleShowGridLines: false,
@@ -101,12 +103,31 @@ class Graph extends React.Component
   }
 
   render () {
-    return <div>
-      {this.state.loaded && this.state.data.datasets.length >= 1 &&
-        <LineChart data={this.state.data} options={chartOptions} width='800' height='400' redraw
-      />}
+    let content = <div></div>;
+    if (this.state.loaded && this.state.data.datasets.length === 1) {
+      content = <LineChart data={this.state.data} options={chartOptions} width='800' height='400' redraw />;
+    } else if (this.state.loaded && this.state.data.datasets.length >= 2) {
+      let pieData =
+          _.map(this.state.data.datasets, (el) => {
+            return {
+              value: el.data.slice(-1).pop(),
+              label: el.label
+            };
+          })
+        ;
+
+      _.forEach(pieData, (value, key) => {
+        pieData[key].color = colors[key].hex;
+        pieData[key].highlightColor = colors[key].hex;
+      });
+
+      content = <PieChart data={pieData} options={{}} width='800' height='400' redraw />;
+    }
+
+    return <div className={classes.drawing}>
+      {content}
     </div>;
-  }
+  };
 }
 
 const mapStateToProps = (state) => ({

@@ -31,7 +31,7 @@ class AddRepo extends React.Component {
         <h3>Add a repo</h3>
         <form onSubmit={this.onSubmit}>
           <div className='input-group'>
-            <input className='form-control' onChange={this.onChange}/>
+            <input className='form-control' onChange={this.onChange} />
             <div className='input-group-btn'>
               <button className='btn btn-default' type='submit'>Add</button>
             </div>

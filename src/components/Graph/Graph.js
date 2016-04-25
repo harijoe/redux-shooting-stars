@@ -29,6 +29,9 @@ const colors = [
   {hex: '#0f9d58', rgb: '15,157,88'}
 ];
 
+/*
+ This class needs heavy refactoring
+ */
 class Graph extends React.Component
 {
   static propTypes = {
@@ -59,15 +62,13 @@ class Graph extends React.Component
 
       return;
     }
-    this.setState({loaded: false}, () => {
-      // Display some kind of graph loader here
-      var promises = [];
-      _(props.tagList.toArray()).forEach(function (repo, index) {
-        promises.push(that.fetchRepoData(repo.text, newData, colors[index]));
-      });
-      Promise.all(promises).then(() => {
-        this.setState({loaded: true});
-      });
+    var promises = [];
+    _(props.tagList.toArray()).forEach(function (repo, index) {
+      promises.push(that.fetchRepoData(repo.text, newData, colors[index]));
+    });
+    this.setState({loaded: false});
+    Promise.all(promises).then(() => {
+      this.setState({loaded: true});
     });
   }
 
@@ -105,7 +106,10 @@ class Graph extends React.Component
   render () {
     let content = <div></div>;
     if (this.state.loaded && this.state.data.datasets.length === 1) {
-      content = <LineChart data={this.state.data} options={chartOptions} width='800' height='400' redraw />;
+      content = <div>
+        <h3>30 last days</h3>
+        <LineChart data={this.state.data} options={chartOptions} width='800' height='400' redraw />;
+      </div>;
     } else if (this.state.loaded && this.state.data.datasets.length >= 2) {
       let pieData =
           _.map(this.state.data.datasets, (el) => {
@@ -121,7 +125,10 @@ class Graph extends React.Component
         pieData[key].highlightColor = colors[key].hex;
       });
 
-      content = <PieChart data={pieData} options={{}} width='800' height='400' redraw />;
+      content = <div>
+        <h3>Today</h3>
+        <PieChart data={pieData} options={{}} width='800' height='400' redraw />;
+      </div>;
     }
 
     return <div className={classes.drawing}>

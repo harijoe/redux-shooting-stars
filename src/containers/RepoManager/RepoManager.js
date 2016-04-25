@@ -2,7 +2,6 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 
 import AddRepo from '../../components/RepoManager/AddRepo';
-import RepoList from '../../components/RepoManager/RepoList';
 import Message from '../../components/RepoManager/Message';
 import { addRepo } from '../../redux/modules/addRepo';
 
@@ -18,7 +17,6 @@ class RepoManager extends React.Component
     return <div>
       <Message {...this.props.addRepoState} />
       <AddRepo addRepo={this.props.addRepo} />
-      <RepoList availableRepos={this.props.availableRepos} />
     </div>;
   }
 }

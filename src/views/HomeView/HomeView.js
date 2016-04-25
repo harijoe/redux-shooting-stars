@@ -3,9 +3,11 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { increment, doubleAsync } from '../../redux/modules/counter';
 import { refreshRepos } from '../../redux/modules/availableRepos';
+import { fetchStats } from '../../redux/modules/stats';
 import TagSelector from '../../components/TagSelector/TagSelector';
 import RepoManager from '../../containers/RepoManager/RepoManager';
 import Graph from '../../components/Graph/Graph';
+import Stats from '../../components/Stats/Stats';
 import classes from './HomeView.scss';
 
 // We can use Flow (http://flowtype.org/) to type our component's props
@@ -22,7 +24,9 @@ import classes from './HomeView.scss';
 export class HomeView extends React.Component {
   static propTypes = {
     counter: PropTypes.number.isRequired,
+    stats: PropTypes.object.isRequired,
     refreshRepos: PropTypes.func.isRequired,
+    fetchStats: PropTypes.func.isRequired,
     doubleAsync: PropTypes.func.isRequired,
     increment: PropTypes.func.isRequired
   };
@@ -30,6 +34,7 @@ export class HomeView extends React.Component {
   constructor (props) {
     super(props);
     this.props.refreshRepos();
+    this.props.fetchStats();
   }
 
   render () {
@@ -40,6 +45,7 @@ export class HomeView extends React.Component {
         </nav>
         <div className='container'>
           <div className='col-sm-4'>
+            <Stats stats={this.props.stats} />
             <RepoManager />
           </div>
           <div className='col-sm-8'>
@@ -47,7 +53,6 @@ export class HomeView extends React.Component {
             <div className={classes.tags}>
               <TagSelector />
             </div>
-
             <Graph />
           </div>
         </div>
@@ -57,10 +62,12 @@ export class HomeView extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  counter: state.counter
+  counter: state.counter,
+  stats: state.stats
 });
 export default connect((mapStateToProps), {
   increment: () => increment(1),
   doubleAsync,
-  refreshRepos
+  refreshRepos,
+  fetchStats
 })(HomeView);

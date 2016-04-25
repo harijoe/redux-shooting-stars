@@ -44,9 +44,10 @@ export const refreshRepos = () => {
           return e['name'];
         })));
       })
-    .catch((response) => {
-      dispatch(receiveReposFailure(response.data['hydra:title']));
-    });
+      .catch((response) => {
+        dispatch(receiveReposFailure(response.data['hydra:title']));
+        window.setTimeout(() => dispatch(refreshRepos()), 2000); // Retry every 2s
+      });
   };
 };
 
